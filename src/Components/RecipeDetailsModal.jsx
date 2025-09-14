@@ -8,7 +8,7 @@ export default function RecipeDetailsModal({ recipe, onClose }) {
     const fetchRecipe = async () => {
       try {
         const res = await fetch(
-          `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=YOUR_API_KEY`
+          `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
         );
         const data = await res.json();
         setFullRecipe(data);
