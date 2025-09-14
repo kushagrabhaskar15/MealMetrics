@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes,Route } from 'react-router-dom';
 import IngredientsInput from './Components/IngredientsInput.jsx';
 import RecipeList from './Components/RecipeList.jsx';
-import Chatbot from './Components/Chatbot.jsx';
+import Chatbot from './SmallComponents/Chatbot.jsx';
 import RecipeDetailsModal from './Components/RecipeDetailsModal.jsx';
+import LandingPage from "./Pages/LandingPage.jsx";
+import Navbar from './SmallComponents/Navbar.jsx';
+import SignIn from './Pages/SignIn.jsx';
+import Register from './Pages/Register.jsx';
+import About from './Pages/About.jsx';
+import NutritionInfo from './Pages/NutritionInfo.jsx';
 
 // Add the Tailwind CSS script dynamically to the HTML head
 const tailwindScript = document.createElement('script');
@@ -43,33 +50,17 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center font-sans">
-      <div className="max-w-4xl w-full">
-        <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-4 tracking-tight">
-          AI Recipe Generator
-        </h1>
-        <p className="text-center text-gray-500 mb-8">
-          Enter your ingredients to find recipes and their nutritional info!
-        </p>
-
-        <IngredientsInput 
-          ingredients={ingredients}
-          setIngredients={setIngredients}
-          fetchRecipes={fetchRecipes}
-          loading={loading}
-        />
-        
-        {recipes.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recipes.map((recipe) => (
-              <RecipeList key={recipe.id} recipe={recipe} onSelectRecipe={setSelectedRecipe} />
-            ))}
-          </div>
-        )}
-      </div>
-      <RecipeDetailsModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />
-      <Chatbot />
-    </div>
+    <>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage/>}/>
+        <Route path="/sign-in" element={<SignIn/>}/>
+        <Route path="/register" element={<Register/>}/>
+        <Route path="/about" element={<About/>}/>
+        <Route path="/nutrition-info" element={<NutritionInfo/>}/>
+      </Routes>
+    </Router>
+    </>
   );
 };
 

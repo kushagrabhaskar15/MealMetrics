@@ -6,6 +6,7 @@ const Chatbot = () => {
   const [chatInput, setChatInput] = useState('');
   const [isChatLoading, setIsChatLoading] = useState(false);
 
+  // Exponential backoff logic
   const handleSendChat = async () => {
     if (!chatInput.trim()) return;
 
@@ -14,32 +15,48 @@ const Chatbot = () => {
     setChatInput('');
     setIsChatLoading(true);
 
-    // Ye Gemini API key environment variable se uthaega.
-    // Apne project ke root mein ek .env file bana aur usme ye line daal de:
-    // VITE_GEMINI_API_KEY="TERA-API-KEY-YAHAN-AAYEGA"
-    const apiKey = import.meta.env.GEMINI_API_KEY;
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
     const payload = {
       contents: newChatHistory,
     };
 
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+    const maxRetries = 3;
+    let retryCount = 0;
+    let success = false;
+    let responseText = "Sorry, I couldn't get a response. Please try again.";
 
-      const result = await response.json();
-      const botResponse = result?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't get a response. Please try again.";
-      setChatHistory(prev => [...prev, { role: "model", parts: [{ text: botResponse }] }]);
-    } catch (error) {
-      console.error("Gemini API Error:", error);
-      setChatHistory(prev => [...prev, { role: "model", parts: [{ text: "Sorry, something went wrong with the AI." }] }]);
-    } finally {
-      setIsChatLoading(false);
+    while (retryCount < maxRetries && !success) {
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          responseText = result?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't get a response. Please try again.";
+          success = true;
+        } else {
+          throw new Error(`API error: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Gemini API Error:", error);
+        retryCount++;
+        const delay = Math.pow(2, retryCount) * 1000; // Exponential backoff: 2s, 4s, 8s
+        if (retryCount < maxRetries) {
+          console.log(`Retrying in ${delay / 1000} seconds...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        } else {
+          console.error("Max retries exceeded.");
+        }
+      }
     }
+
+    setChatHistory(prev => [...prev, { role: "model", parts: [{ text: responseText }] }]);
+    setIsChatLoading(false);
   };
 
   return (
