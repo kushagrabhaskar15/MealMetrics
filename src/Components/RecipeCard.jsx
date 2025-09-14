@@ -1,10 +1,8 @@
 import React from 'react';
 
-export default function RecipeCard({ recipe, onSelectRecipe }) {
+export default function RecipeCard({ recipe, onSelect }) {
   return (
-    <article
-      className="bg-white p-4 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center text-center ml-10 mr-10 mt-10 h-50"
-    >
+    <article className="bg-white p-4 rounded-xl shadow-md hover:shadow-xl transition flex flex-col items-center text-center">
       <img
         src={recipe.image}
         alt={recipe.title}
@@ -12,8 +10,9 @@ export default function RecipeCard({ recipe, onSelectRecipe }) {
       />
       <h3 className="text-lg font-semibold text-gray-800 mb-2">{recipe.title}</h3>
       <button
-        onClick={() => onSelectRecipe(recipe)}
-        className="px-4 py-2 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition-colors shadow"
+        type="button" // ← This prevents page reload
+        onClick={onSelect}
+        className="px-4 py-2 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition shadow"
       >
         View Details
       </button>

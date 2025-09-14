@@ -16,7 +16,7 @@ const HeroSection = () => {
             <Link to="/signin" className="bg-violet-600 text-white font-medium px-8 py-3 rounded-full shadow-lg transition duration-300 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-opacity-50">
               Get Started
             </Link>
-            <Link to="find" className="bg-white text-violet-600 font-medium px-8 py-3 rounded-full border border-violet-300 transition duration-300 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-opacity-50">
+            <Link to="find-recipes" className="bg-white text-violet-600 font-medium px-8 py-3 rounded-full border border-violet-300 transition duration-300 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-opacity-50">
               Explore Recipes
             </Link>
           </div>

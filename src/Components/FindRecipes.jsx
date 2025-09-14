@@ -16,7 +16,7 @@ export default function FindRecipes() {
     try {
       const query = ingredients.join(",");
       const res = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}&number=15`
       );
       const data = await res.json();
       setRecipes(data);

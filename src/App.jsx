@@ -52,10 +52,10 @@ const App = () => {
         <Route path="/register" element={<Register/>}/>
         <Route path="/about" element={<About/>}/>
         <Route path="/nutrition" element={<NutritionInfo/>}/>
-        <Route path="/find" element={<FindRecipes/>}/>
+        <Route path="/find-recipes" element={<FindRecipes/>}/>
         <Route path="/ingredients" element={<IngredientsInput/>}/>
         <Route path="/recipes" element={<RecipeList/>}/>
-        <Route path="/recipedetails" element={<RecipeDetailsModal/>}/>
+        <Route path="/recipe-details" element={<RecipeDetailsModal/>}/>
         <Route path="/profile" element={<Profile/>}/>
       </Routes>
     </Router>

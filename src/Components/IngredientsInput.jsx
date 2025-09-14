@@ -14,7 +14,7 @@ export default function IngredientsInput({ ingredients, setIngredients, fetchRec
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-lg mb-8 mr-40 ml-40 mt-10">
+    <div className="bg-white p-6 rounded-xl shadow-lg mb-8 mx-10 mt-10">
       <h2 className="text-2xl font-semibold mb-4 text-gray-700">Your Ingredients</h2>
 
       <div className="flex flex-col md:flex-row gap-4 mb-4">
@@ -27,7 +27,7 @@ export default function IngredientsInput({ ingredients, setIngredients, fetchRec
         />
         <button
           onClick={handleAdd}
-          className="px-6 py-2 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition-colors shadow"
+          className="px-6 py-2 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition shadow"
         >
           Add
         </button>
