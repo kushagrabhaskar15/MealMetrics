@@ -9,9 +9,6 @@ import Register from './Pages/Register.jsx';
 import About from './Pages/About.jsx';
 import NutritionInfo from './Pages/NutritionInfo.jsx';
 import FindRecipes from './Components/FindRecipes.jsx';
-import RecipeL from './AnotherAi/RecipeL.jsx'
-import RecipeListItem from './AnotherAi/RecipeListItem.jsx';
-import Search from './AnotherAi/Search.jsx';
 const tailwindScript = document.createElement('script');
 tailwindScript.src = 'https://cdn.tailwindcss.com';
 document.head.appendChild(tailwindScript);
@@ -48,8 +45,6 @@ const App = () => {
   return (
     <>
     <Router>
-      <Search onSearch={setQuery} />
-      <RecipeList query={query} />
       <Routes>
         <Route path="/" element={<LandingPage/>}/>
         <Route path="/signin" element={<SignIn/>}/>
@@ -60,8 +55,6 @@ const App = () => {
         <Route path="/ingredients" element={<IngredientsInput/>}/>
         <Route path="/recipes" element={<RecipeList/>}/>
         <Route path="/recipedetails" element={<RecipeDetailsModal/>}/>
-        <Route path="/recipel" element={<RecipeL/>} />
-        <Route path="/recipes/:recipe_id" element={<RecipeListItem/>} />
       </Routes>
     </Router>
     </>
