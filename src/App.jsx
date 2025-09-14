@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes,Route } from 'react-router-dom';
+import IngredientsInput from './Components/IngredientsInput.jsx';
 import RecipeList from './Components/RecipeList.jsx';
 import RecipeDetailsModal from './Components/RecipeDetailsModal.jsx';
 import LandingPage from "./Pages/LandingPage.jsx";
@@ -26,7 +27,7 @@ const App = () => {
   const fetchRecipes = async () => {
     setLoading(true);
     
-    const apiKey =  bfdb242eb61e432680202ad9f61314ca;
+    const apiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
     const ingredientsString = ingredients.join(',').toLowerCase();
 
     try {
@@ -56,6 +57,7 @@ const App = () => {
         <Route path="/about" element={<About/>}/>
         <Route path="/nutrition" element={<NutritionInfo/>}/>
         <Route path="/find" element={<FindRecipes/>}/>
+        <Route path="/ingredients" element={<IngredientsInput/>}/>
         <Route path="/recipes" element={<RecipeList/>}/>
         <Route path="/recipedetails" element={<RecipeDetailsModal/>}/>
         <Route path="/recipel" element={<RecipeL/>} />
