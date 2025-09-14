@@ -1,0 +1,60 @@
+import React, { useState } from "react";
+import IngredientsInput from "./IngredientsInput";
+import RecipeList from "./RecipeList";
+import RecipeDetailsModal from "./RecipeDetailsModal";
+import Navbar from "../SmallComponents/Navbar";
+
+export default function FindRecipes() {
+  const [ingredients, setIngredients] = useState([]);
+  const [recipes, setRecipes] = useState([]);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchRecipes = async () => {
+    if (!ingredients.length) return;
+    setLoading(true);
+    try {
+      const query = ingredients.join(",");
+      const res = await fetch(
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
+      );
+      const data = await res.json();
+      setRecipes(data);
+    } catch (err) {
+      console.error("Error fetching recipes", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+    <Navbar/>
+    <section id="find-recipes" className="min-h-screen bg-gray-100 p-8">
+      <h1 className="text-4xl font-extrabold text-center mb-4 text-gray-800">
+        AI Recipe Generator
+      </h1>
+      <p className="text-center text-gray-500 mb-8">
+        Enter your ingredients to find recipes and their nutritional info!
+      </p>
+
+      <IngredientsInput
+        ingredients={ingredients}
+        setIngredients={setIngredients}
+        fetchRecipes={fetchRecipes}
+        loading={loading}
+      />
+
+      {/* ✅ Recipe list stays visible because we never clear `recipes` */}
+      {recipes.length > 0 && (
+        <RecipeList recipes={recipes} onSelectRecipe={setSelectedRecipe} />
+      )}
+
+      <RecipeDetailsModal
+        recipe={selectedRecipe}
+        onClose={() => setSelectedRecipe(null)}
+      />
+    </section>
+    </>
+  );
+}
