@@ -30,14 +30,6 @@ export default function FindRecipes() {
   return (
     <>
     <Navbar/>
-    <section id="find-recipes" className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-4xl font-extrabold text-center mb-4 text-gray-800">
-        AI Recipe Generator
-      </h1>
-      <p className="text-center text-gray-500 mb-8">
-        Enter your ingredients to find recipes and their nutritional info!
-      </p>
-
       <IngredientsInput
         ingredients={ingredients}
         setIngredients={setIngredients}
@@ -54,7 +46,6 @@ export default function FindRecipes() {
         recipe={selectedRecipe}
         onClose={() => setSelectedRecipe(null)}
       />
-    </section>
     </>
   );
 }

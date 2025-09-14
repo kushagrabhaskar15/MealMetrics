@@ -104,42 +104,6 @@ export default function SignIn() {
 
         <div className="my-6 border-t border-gray-300"></div>
 
-        {/* Phone / OTP */}
-        <div className="space-y-4">
-          <input
-            type="tel"
-            placeholder="+911234567890"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full px-4 py-2 border rounded-full focus:ring-2 focus:ring-violet-500 focus:outline-none"
-          />
-          <div id="recaptcha-container"></div>
-          {!confirmationResult ? (
-            <button
-              onClick={handlePhoneSignIn}
-              className="w-full bg-gray-600 text-white py-2 rounded-full hover:bg-gray-700 transition"
-            >
-              Send OTP
-            </button>
-          ) : (
-            <>
-              <input
-                type="text"
-                placeholder="Enter OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="w-full px-4 py-2 border rounded-full focus:ring-2 focus:ring-violet-500 focus:outline-none"
-              />
-              <button
-                onClick={handleVerifyOtp}
-                className="w-full bg-violet-600 text-white py-2 rounded-full hover:bg-violet-700 transition"
-              >
-                Verify OTP
-              </button>
-            </>
-          )}
-        </div>
-
         <div className="my-6 border-t border-gray-300"></div>
 
         {/* Google */}

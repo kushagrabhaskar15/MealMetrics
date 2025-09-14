@@ -14,7 +14,7 @@ export default function IngredientsInput({ ingredients, setIngredients, fetchRec
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-lg mb-8">
+    <div className="bg-white p-6 rounded-xl shadow-lg mb-8 mr-40 ml-40 mt-10">
       <h2 className="text-2xl font-semibold mb-4 text-gray-700">Your Ingredients</h2>
 
       <div className="flex flex-col md:flex-row gap-4 mb-4">

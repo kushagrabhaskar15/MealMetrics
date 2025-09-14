@@ -9,6 +9,7 @@ import Register from './Pages/Register.jsx';
 import About from './Pages/About.jsx';
 import NutritionInfo from './Pages/NutritionInfo.jsx';
 import FindRecipes from './Components/FindRecipes.jsx';
+import Profile from './Pages/Profile.jsx';
 const tailwindScript = document.createElement('script');
 tailwindScript.src = 'https://cdn.tailwindcss.com';
 document.head.appendChild(tailwindScript);
@@ -55,6 +56,7 @@ const App = () => {
         <Route path="/ingredients" element={<IngredientsInput/>}/>
         <Route path="/recipes" element={<RecipeList/>}/>
         <Route path="/recipedetails" element={<RecipeDetailsModal/>}/>
+        <Route path="/profile" element={<Profile/>}/>
       </Routes>
     </Router>
     </>

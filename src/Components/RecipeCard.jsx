@@ -3,7 +3,7 @@ import React from 'react';
 export default function RecipeCard({ recipe, onSelectRecipe }) {
   return (
     <article
-      className="bg-white p-4 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center text-center"
+      className="bg-white p-4 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center text-center ml-10 mr-10 mt-10 h-50"
     >
       <img
         src={recipe.image}
