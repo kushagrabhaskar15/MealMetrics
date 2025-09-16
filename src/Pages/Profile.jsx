@@ -1,6 +1,6 @@
 // src/components/Profile.jsx
 import { useEffect, useState } from "react";
-import { auth, db } from "../components/Auth.jsx"; // Auth + Firestore
+import { auth, db } from "../Components/Auth.jsx"; // Auth + Firestore
 import { signOut } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";

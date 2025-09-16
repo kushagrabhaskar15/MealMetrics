@@ -1,12 +1,13 @@
 // src/components/Register.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
-import { auth, db } from "../components/Auth.jsx";
+import { auth, db } from "../Components/Auth.jsx";
 import { doc, setDoc } from "firebase/firestore";
 
 export default function Register() {
@@ -24,7 +25,14 @@ export default function Register() {
   const navigate = useNavigate();
   const googleProvider = new GoogleAuthProvider();
 
-  // Step 1: Email signup
+  // Ensure current user is always up-to-date
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) setCurrentUserId(user.uid);
+    });
+    return () => unsubscribe();
+  }, []);
+
   const handleEmailRegister = async () => {
     if (!email || !password) {
       alert("Please enter email and password");
@@ -33,8 +41,7 @@ export default function Register() {
     try {
       setLoading(true);
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCredential.user?.uid || auth.currentUser?.uid;
-      setCurrentUserId(uid);
+      setCurrentUserId(userCredential.user.uid);
       setStep(2); // move to extra info
     } catch (error) {
       alert(error.message);
@@ -43,12 +50,10 @@ export default function Register() {
     }
   };
 
-  // Step 1: Google signup
   const handleGoogleRegister = async () => {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
-      const uid = userCredential.user?.uid || auth.currentUser?.uid;
-      setCurrentUserId(uid);
+      setCurrentUserId(userCredential.user.uid);
       setStep(2); // move to extra info
       alert("Signed in with Google!");
     } catch (error) {
@@ -56,42 +61,40 @@ export default function Register() {
     }
   };
 
-  // Step 2: Save extra info to Firestore
   const handleExtraInfoSubmit = async () => {
     if (!name || !age || !foodPref) {
       alert("Please fill all fields");
       return;
     }
 
-    if (!currentUserId) {
+    const uid = currentUserId || auth.currentUser?.uid;
+    if (!uid) {
       alert("User not found. Please login again.");
       return;
     }
 
     try {
-      await setDoc(doc(db, "users", currentUserId), {
+      await setDoc(doc(db, "users", uid), {
         name,
         age,
         foodPreference: foodPref,
-        email: email || auth.currentUser.email,
+        email: email || auth.currentUser?.email || "",
       });
       alert("Profile info saved!");
       navigate("/"); // redirect to home/dashboard
     } catch (error) {
-      console.error(error);
-      alert(error.message);
+      console.error("Firestore write error:", error);
+      alert("Failed to save info. Please check your internet connection.");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 relative">
-
         {step === 1 && (
           <>
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Register</h2>
 
-            {/* Email Registration */}
             <div className="space-y-4">
               <input
                 type="email"
@@ -118,7 +121,6 @@ export default function Register() {
 
             <div className="my-6 border-t border-gray-300"></div>
 
-            {/* Google */}
             <button
               onClick={handleGoogleRegister}
               className="w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-full hover:bg-gray-50 transition"
@@ -143,7 +145,6 @@ export default function Register() {
           </>
         )}
 
-        {/* Step 2: Extra Info */}
         {step === 2 && (
           <>
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Tell us about yourself</h2>

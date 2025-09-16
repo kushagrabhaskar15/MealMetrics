@@ -10,7 +10,7 @@ export default function RecipeCard({ recipe, onSelect }) {
       />
       <h3 className="text-lg font-semibold text-gray-800 mb-2">{recipe.title}</h3>
       <button
-        type="button" // ← This prevents page reload
+        type="button"
         onClick={onSelect}
         className="px-4 py-2 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition shadow"
       >

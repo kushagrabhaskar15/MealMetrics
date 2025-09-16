@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 export default function IngredientsInput({ ingredients, setIngredients, fetchRecipes, loading }) {
   const [inputValue, setInputValue] = useState('');
+  const [find, setFind] = useState(false);
 
   const handleAdd = () => {
     if (!inputValue.trim()) return;
@@ -14,6 +15,7 @@ export default function IngredientsInput({ ingredients, setIngredients, fetchRec
   };
 
   return (
+    <>
     <div className="bg-white p-6 rounded-xl shadow-lg mb-8 mx-10 mt-10">
       <h2 className="text-2xl font-semibold mb-4 text-gray-700">Your Ingredients</h2>
 
@@ -26,7 +28,8 @@ export default function IngredientsInput({ ingredients, setIngredients, fetchRec
           className="flex-grow px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
         />
         <button
-          onClick={handleAdd}
+          onClick={handleAdd
+          }
           className="px-6 py-2 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition shadow"
         >
           Add
@@ -41,7 +44,9 @@ export default function IngredientsInput({ ingredients, setIngredients, fetchRec
           >
             {ing}
             <button
-              onClick={() => handleRemove(index)}
+              onClick={() => {handleRemove(index)
+                             setFind(true)}
+              }
               className="ml-2 text-indigo-500 hover:text-indigo-700"
               aria-label={`Remove ${ing}`}
             >
@@ -59,5 +64,15 @@ export default function IngredientsInput({ ingredients, setIngredients, fetchRec
         {loading ? 'Finding Recipes…' : 'Find Recipes'}
       </button>
     </div>
+    find==true?
+    {
+      <button
+        onClick={()=>{setMoreRecipes+=15}}
+        className="bg-transparent text-gray-600 hover:text-gray-700 cursor-pointer "
+      >
+        show more recipes
+      </button>
+    }
+    </>
   );
 }

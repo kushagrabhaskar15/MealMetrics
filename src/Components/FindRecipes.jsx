@@ -9,6 +9,7 @@ export default function FindRecipes() {
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [moreRecipes, setMoreRecipes] = useState(15);
 
   const fetchRecipes = async () => {
     if (!ingredients.length) return;
@@ -16,7 +17,7 @@ export default function FindRecipes() {
     try {
       const query = ingredients.join(",");
       const res = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}&number=15`
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}&number=${moreRecipes}`
       );
       const data = await res.json();
       setRecipes(data);
@@ -39,12 +40,14 @@ export default function FindRecipes() {
 
       {/* ✅ Recipe list stays visible because we never clear `recipes` */}
       {recipes.length > 0 && (
-        <RecipeList recipes={recipes} onSelectRecipe={setSelectedRecipe} />
+        <RecipeList recipes={recipes}/>
       )}
 
       <RecipeDetailsModal
         recipe={selectedRecipe}
-        onClose={() => setSelectedRecipe(null)}
+        onClose={() => {setSelectedRecipe(null)
+                        setMoreRecipes(15)}
+        }
       />
     </>
   );
