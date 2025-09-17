@@ -14,24 +14,14 @@ export default function RecipeDetailsPage() {
         const res = await fetch(
           `https://api.spoonacular.com/recipes/${id}/information?includeNutrition=true&apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
         );
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         setFullRecipe(data);
       } catch (err) {
         console.error('Error fetching recipe details:', err);
-        setError('Failed to load recipe details.');
       }
     };
     fetchRecipe();
   }, [id]);
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-screen text-red-600 text-xl">
-        {error}
-      </div>
-    );
-  }
 
   if (!fullRecipe) {
     return (
