@@ -22,7 +22,7 @@ export default function FindRecipes() {
       const data = await res.json();
       setRecipes(data);
     } catch (err) {
-      console.error("Error fetching recipes", err);
+      alert("Error fetching recipes", err," in find recipes");
     } finally {
       setLoading(false);
     }

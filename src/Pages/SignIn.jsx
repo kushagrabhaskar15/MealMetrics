@@ -84,10 +84,7 @@ export default function SignIn() {
             {loading ? "Signing in..." : "Sign in with Email"}
           </button>
         </div>
-
-        <div className="my-6 border-t border-gray-300"></div>
-
-        <div className="my-6 border-t border-gray-300"></div>
+        <br/>
 
         {/* Google */}
         <button

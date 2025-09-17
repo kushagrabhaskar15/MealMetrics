@@ -42,8 +42,7 @@ export default function IngredientsInput({ ingredients, setIngredients, fetchRec
           >
             {ing}
             <button
-              onClick={() => {handleRemove(index)
-                             setFind(true)}
+              onClick={() => handleRemove(index)
               }
               className="ml-2 text-indigo-500 hover:text-indigo-700"
               aria-label={`Remove ${ing}`}

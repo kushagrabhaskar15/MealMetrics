@@ -45,7 +45,7 @@ const Navbar = () => {
             to="/nutrition"
             className="text-gray-600 hover:text-violet-600 transition-colors duration-200"
           >
-            Macros & Micros
+            Nutrition Calculator
           </Link>
           <Link
             to="/about"

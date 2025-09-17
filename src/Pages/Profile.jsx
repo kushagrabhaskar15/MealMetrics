@@ -33,7 +33,7 @@ export default function Profile() {
       console.error("Error fetching saved recipes:", error);
     }
   };
-
+  
   // Logout
   const handleLogout = async () => {
     try {

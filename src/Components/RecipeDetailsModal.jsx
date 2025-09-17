@@ -1,26 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import Navbar from '../SmallComponents/Navbar';
 
-export default function RecipeDetailsModal({ recipe, onClose }) {
+export default function RecipeDetailsPage() {
   const [fullRecipe, setFullRecipe] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
         const res = await fetch(
-          `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
+          `https://api.spoonacular.com/recipes/${id}/information?apiKey=${import.meta.env.VITE_SPOONACULAR_API_KEY}`
         );
         const data = await res.json();
         setFullRecipe(data);
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching recipe details:", err);
       }
     };
-
     fetchRecipe();
-  }, [recipe]);
+  }, [id]);
 
-  if (!fullRecipe) return null;
+  if (!fullRecipe) {
+    return (
+      <div className="flex items-center justify-center h-screen text-gray-600 text-xl">
+        Loading...
+      </div>
+    );
+  }
 
   const ingredients =
     fullRecipe.extendedIngredients?.map((i) => ({
@@ -28,53 +36,79 @@ export default function RecipeDetailsModal({ recipe, onClose }) {
       quantity: i.original,
     })) || [];
 
-  return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900 bg-opacity-75">
-      <div className="bg-white rounded-xl shadow-2xl p-6 md:p-8 max-w-5xl w-full max-h-[90vh] overflow-y-auto flex flex-col md:flex-row">
-        {/* Image */}
-        <div className="md:w-1/3">
-          <img
-            src={fullRecipe.image}
-            alt={fullRecipe.title}
-            className="w-full h-full object-cover rounded-lg"
-          />
+  return (
+      <div>
+      <Navbar/>
+      {/* Main content area */}
+      <main className="container mx-auto px-4 py-8 max-w-5xl">
+        {/* Back to Recipes Button */}
+        <div className="mb-6">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center text-sm text-purple-600 font-medium hover:text-purple-700 transition duration-300"
+          >
+            <span className="mr-2 text-xl">←</span> Back to Recipes
+          </button>
         </div>
 
-        {/* Content */}
-        <div className="md:w-2/3 p-4 flex flex-col gap-4 overflow-y-auto">
-          <h2 className="text-3xl font-bold text-gray-800">{fullRecipe.title}</h2>
-
-          {ingredients.length > 0 && (
-            <section>
-              <h3 className="text-xl font-semibold mb-2 text-gray-700">Ingredients</h3>
-              <ul className="list-disc list-inside text-gray-600 space-y-1">
-                {ingredients.map((i, idx) => (
-                  <li key={idx}>
-                    <span className="font-medium text-gray-800">{i.name}</span>
-                    {i.quantity && <span className="text-gray-500"> – {i.quantity}</span>}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          {fullRecipe.instructions && (
-            <section>
-              <h3 className="text-xl font-semibold mb-2 text-gray-700">Instructions</h3>
-              <p className="text-gray-600 leading-relaxed whitespace-pre-line">
-                {fullRecipe.instructions}
-              </p>
-            </section>
-          )}
+        {/* Recipe Title & Subtitle */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
+            {fullRecipe.title}
+          </h1>
         </div>
 
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl leading-none"
-        >
-          ✕
-        </button>
-      </div>
+        {/* Layout for Ingredients, Image, and Instructions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Ingredients Column (Left) */}
+          <div className="lg:col-span-1 bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-2xl font-semibold text-purple-600 mb-4">Ingredients</h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700">
+              {ingredients.map((i, idx) => (
+                <li key={idx}>
+                  {i.original}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Image Column (Middle) */}
+          <div className="lg:col-span-2 flex justify-end"> {/* Use flex-end to push it right */}
+            <img
+              src={fullRecipe.image}
+              alt={fullRecipe.title}
+              className="w-full md:w-2/3 lg:w-3/5 h-auto rounded-lg shadow-lg object-cover" // Adjust width as needed
+              style={{ maxHeight: 'calc(100% - 2rem)' }} // Match height to content next to it
+            />
+          </div>
+        </div>
+        
+        {/* Instructions Section (Below image and ingredients) */}
+        <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
+          <h3 className="text-2xl font-semibold text-purple-600 mb-4">Instructions</h3>
+          <div className="text-gray-700 space-y-4">
+            <p><strong>Prep time:</strong> {fullRecipe.preparationMinutes || 'N/A'} mins</p>
+            <p><strong>Cook time:</strong> {fullRecipe.cookingMinutes || 'N/A'} mins</p>
+            {fullRecipe.instructions && (
+              <div
+                className="leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: fullRecipe.instructions }} // Using dangerouslySetInnerHTML for HTML from API
+              />
+            )}
+          </div>
+          
+          <div className="mt-8 pt-4 border-t border-gray-200 text-sm text-gray-500">
+            <p>
+              Servings: <span className="font-medium">{fullRecipe.servings || 'N/A'}</span> | 
+              Ready in: <span className="font-medium">{fullRecipe.readyInMinutes || 'N/A'} mins</span>
+            </p>
+            {/* You can add more detailed nutrition info if available from API */}
+            <p className="mt-2">
+              Nutrition per serving: Approx. 41g Cal, 25g Fat, 15... (This would typically come from a dedicated nutrition endpoint or calculated client-side)
+            </p>
+          </div>
+        </div>
+      </main>
     </div>
-  )}
+  );
+}

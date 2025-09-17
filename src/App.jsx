@@ -7,7 +7,7 @@ import LandingPage from "./Pages/LandingPage.jsx";
 import SignIn from './Pages/SignIn.jsx';
 import Register from './Pages/Register.jsx';
 import About from './Pages/About.jsx';
-import NutritionInfo from './Pages/NutritionInfo.jsx';
+import NutritionCalculator from './Pages/NutritionCalculator.jsx';
 import FindRecipes from './Components/FindRecipes.jsx';
 import Profile from './Pages/Profile.jsx';
 const tailwindScript = document.createElement('script');
@@ -21,28 +21,6 @@ const App = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [query, setQuery] = useState("");
 
-
-  const fetchRecipes = async () => {
-    setLoading(true);
-    
-    const apiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
-    const ingredientsString = ingredients.join(',').toLowerCase();
-
-    try {
-      const response = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredientsString}&number=10&apiKey=${apiKey}`);
-      if (!response.ok) {
-        throw new Error('API request failed. Check your API key and network connection.');
-      }
-      const data = await response.json();
-      
-      setRecipes(data);
-    } catch (error) {
-      console.error("API Fetch Error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <>
     <Router>
@@ -51,11 +29,11 @@ const App = () => {
         <Route path="/signin" element={<SignIn/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/about" element={<About/>}/>
-        <Route path="/nutrition" element={<NutritionInfo/>}/>
+        <Route path="/nutrition" element={<NutritionCalculator/>}/>
         <Route path="/find-recipes" element={<FindRecipes/>}/>
         <Route path="/ingredients" element={<IngredientsInput/>}/>
         <Route path="/recipes" element={<RecipeList/>}/>
-        <Route path="/recipe-details" element={<RecipeDetailsModal/>}/>
+        <Route path="/recipe-details/:id" element={<RecipeDetailsModal/>}/>
         <Route path="/profile" element={<Profile/>}/>
       </Routes>
     </Router>
