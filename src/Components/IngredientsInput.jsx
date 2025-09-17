@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 export default function IngredientsInput({ ingredients, setIngredients, fetchRecipes, loading }) {
   const [inputValue, setInputValue] = useState('');
-  const [find, setFind] = useState(false);
 
   const handleAdd = () => {
     if (!inputValue.trim()) return;
@@ -15,7 +14,6 @@ export default function IngredientsInput({ ingredients, setIngredients, fetchRec
   };
 
   return (
-    <>
     <div className="bg-white p-6 rounded-xl shadow-lg mb-8 mx-10 mt-10">
       <h2 className="text-2xl font-semibold mb-4 text-gray-700">Your Ingredients</h2>
 
@@ -64,15 +62,5 @@ export default function IngredientsInput({ ingredients, setIngredients, fetchRec
         {loading ? 'Finding Recipes…' : 'Find Recipes'}
       </button>
     </div>
-    find==true?
-    {
-      <button
-        onClick={()=>{setMoreRecipes+=15}}
-        className="bg-transparent text-gray-600 hover:text-gray-700 cursor-pointer "
-      >
-        show more recipes
-      </button>
-    }
-    </>
   );
 }

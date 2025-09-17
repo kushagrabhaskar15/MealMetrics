@@ -1,6 +1,6 @@
 // src/components/Profile.jsx
 import { useEffect, useState } from "react";
-import { auth, db } from "../Components/Auth.jsx"; // Auth + Firestore
+import { auth, db } from "../Components/Auth.jsx";
 import { signOut } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,6 @@ export default function Profile() {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const navigate = useNavigate();
 
-  // Firebase Auth: Check logged-in user
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
       if (currentUser) {
@@ -58,7 +57,7 @@ export default function Profile() {
             alt="Profile Avatar"
             className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
           />
-          <h2 className="text-3xl font-bold text-gray-800 mt-4">{user.displayName || "Your Name"}</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mt-4">{user.name || "Your Name"}</h2>
           <p className="text-gray-600">{user.email}</p>
         </div>
 

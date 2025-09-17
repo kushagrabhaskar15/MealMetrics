@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { auth, db } from "../Components/Auth.jsx";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc,addDoc} from "firebase/firestore";
 
 export default function Register() {
   const [step, setStep] = useState(1); // Step 1: signup, Step 2: extra info
@@ -64,12 +64,6 @@ export default function Register() {
   const handleExtraInfoSubmit = async () => {
     if (!name || !age || !foodPref) {
       alert("Please fill all fields");
-      return;
-    }
-
-    const uid = currentUserId || auth.currentUser?.uid;
-    if (!uid) {
-      alert("User not found. Please login again.");
       return;
     }
 

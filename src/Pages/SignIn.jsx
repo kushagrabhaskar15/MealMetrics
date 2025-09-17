@@ -8,7 +8,8 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { Link } from "react-router-dom";
-import { auth } from "../components/Auth.jsx";
+import { auth } from "../Components/Auth.jsx";
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,7 @@ export default function SignIn() {
   const [otp, setOtp] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const googleProvider = new GoogleAuthProvider();
 
@@ -25,30 +27,11 @@ export default function SignIn() {
       setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
       alert("Signed in successfully");
+      navigate("/");
     } catch (error) {
       alert(error.message);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handlePhoneSignIn = async () => {
-    try {
-      const recaptcha = new RecaptchaVerifier("recaptcha-container", { size: "invisible" }, auth);
-      const result = await signInWithPhoneNumber(auth, phone, recaptcha);
-      setConfirmationResult(result);
-      alert("OTP sent");
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  const handleVerifyOtp = async () => {
-    try {
-      await confirmationResult.confirm(otp);
-      alert("Phone sign-in successful!");
-    } catch (error) {
-      alert(error.message);
     }
   };
 
@@ -62,7 +45,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6 relative">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
       
       {/* Close Button */}
